@@ -1,11 +1,17 @@
 # BicycleGAN-pytorch
 __Pytorch__ implementation of [BicycleGAN : Toward Multimodal Image-to-Image Translation](https://arxiv.org/abs/1711.11586). This model can generate diverse images from an input image using random latent vector z.
+<p align="center"><img width="100%" src="png/represent.png" /></p>  
 
 ## Result
 ### Edges2Shoes
+* Random sampling
+<p align="center"><img width="100%" src="png/random_sample.png" /></p>  
+
+* Linear interpolated sampling
+<p align="center"><img width="100%" src="png/interpolation.png" /></p>  
 
 ## Model description
-<p align="center"><img width="100%" src="png/bicyclegan.png" /></p>  
+<p align="center"><img width="100%" src="png/model.png" /></p>  
 
 ### cVAE-GAN
 This can be seen as __image reconstruction process.__ By doing this, we can make the encoder extract proper latent code z which specializes given image 'B' and the generator generate an image which has features of 'B'. Of course, the generator also needs to be able to fool the discriminator. Futhermore, It uses KL-divergence to make the generator be able to generate images using randomly sampled z from normal distribution.
