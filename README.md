@@ -42,9 +42,6 @@ __3. Optimize ONLY G(Do not update E)__
 * __Multi discriminator__  
 First, two discriminators are used for two different last output size(PatchGAN), 14x14 and 30x30. Second, two discriminators again for images made with encoded z(cVAE-GAN) and random z(cLR-GAN). Totally, __four discriminators__ are used, __(cVAE-GAN, 14x14), (cVAE-GAN, 30x30), (cLR-GAN, 14x14) and (cLR-GAN, 30x30).__
 
-* __Conditional discriminator__  
-pass
-
 * __Encoder__  
 __E_ResNet__ is used, __not E_CNN__. Residual block in the encoder is slightly different with the usual one. Check ResBlock class and Encoder class in model.py.
 
@@ -58,7 +55,9 @@ Batch size is 1 for each cVAE-GAN and cLR-GAN which means that get two images fr
 Encoder returns mean and log(variance). Reparameterization trick is used, so __encoded_z = random_z * std + mean__ such that __std = exp(log_variance / 2).__
 
 * __How to calculate KL divergence__  
-Images should be here
+<p align="left"><img width="70%" img height="70%" src="png/kl_1.png" /></p>  
+We need to get KL divergence with __N(0, 1)__, so it leads to following expression.  
+<p align="left"><img width="70%" img height="70%" src="png/kl_2.png" /></p>  
 
 * __How to reconstruct z in cLR-GAN__  
 We get mu and log(variance) as outputs from the encoder in cLR-GAN. Use __L1 loss between mu and random_z__, not encoded_z and random_z because the latter loss can be unstable if std is big. You can check [here](https://github.com/junyanz/BicycleGAN/issues/14).
