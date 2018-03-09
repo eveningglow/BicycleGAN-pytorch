@@ -31,17 +31,17 @@ pass
 * __Encoder__  
 __E_ResNet__ is used, __not E_CNN__. Residual block in the encoder is slightly different with the usual one. Check ResBlock class and Encoder class in model.py.
 
-### How to inject the latent code z to the generator
+* __How to inject the latent code z to the generator__  
 Just inject __only to the input__, not to all intermediate layers
 
-### Training data
+* __Training data__  
 Batch size is 1 for each cVAE-GAN and cLR-GAN which means that get two images from the dataloader and distribute to cVAE-GAN and cLR-GAN.
 
-### How to encode with encoder
+* __How to encode with encoder__  
 Encoder returns mean and log(variance). Reparameterization trick is used, so __encoded_z = random_z * std + mean__ such that __std = exp(log_variance / 2).__
 
-### How to calculate KL divergence
+* __How to calculate KL divergence__  
 Images should be here
 
-### How to reconstruct z in cLR-GAN
+* __How to reconstruct z in cLR-GAN__  
 We get mu and log(variance) as outputs from the encoder in cLR-GAN. Use L1 loss between mu and random_z, not encoded_z and random_z because the latter loss can be unstable if std is big. You can check [here](https://github.com/junyanz/BicycleGAN/issues/14).
