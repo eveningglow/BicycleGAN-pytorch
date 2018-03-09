@@ -56,7 +56,7 @@ Encoder returns mean and log(variance). Reparameterization trick is used, so __e
 
 * __How to calculate KL divergence__  
 <p align="left"><img width="70%" img height="70%" src="png/kl_1.png" /></p>  
-We need to get KL divergence with __N(0, 1)__, so it leads to following expression.  
+We need to get KL divergence with N(0, 1), so it leads to following expression.  
 <p align="left"><img width="70%" img height="70%" src="png/kl_2.png" /></p>  
 
 * __How to reconstruct z in cLR-GAN__  
