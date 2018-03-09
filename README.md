@@ -22,13 +22,13 @@ This can be seen as __latent code reconstruction process.__ The main purpose of 
 
 ## Implementation details
 
-* Multi discriminator
+* __Multi discriminator__  
 First, two discriminators are used for two different last output size(PatchGAN), 14x14 and 30x30. Second, two discriminators again for images made with encoded z(cVAE-GAN) and random z(cLR-GAN). __Totally, four discriminators are used, (cVAE-GAN, 14x14), (cVAE-GAN, 30x30), (cLR-GAN, 14x14) and (cLR-GAN, 30x30).__
 
-* Conditional discriminator
+* __Conditional discriminator__  
 pass
 
-* Encoder
+* __Encoder__  
 __E_ResNet__ is used, __not E_CNN__. Residual block in the encoder is slightly different with the usual one. Check ResBlock class and Encoder class in model.py.
 
 ### How to inject the latent code z to the generator
