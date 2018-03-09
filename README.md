@@ -44,4 +44,4 @@ Encoder returns mean and log(variance). Reparameterization trick is used, so __e
 Images should be here
 
 * __How to reconstruct z in cLR-GAN__  
-We get mu and log(variance) as outputs from the encoder in cLR-GAN. Use L1 loss between mu and random_z, not encoded_z and random_z because the latter loss can be unstable if std is big. You can check [here](https://github.com/junyanz/BicycleGAN/issues/14).
+We get mu and log(variance) as outputs from the encoder in cLR-GAN. Use __L1 loss between mu and random_z__, not encoded_z and random_z because the latter loss can be unstable if std is big. You can check [here](https://github.com/junyanz/BicycleGAN/issues/14).
