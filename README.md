@@ -17,8 +17,19 @@ This can be seen as __latent code reconstruction process.__ The main purpose of 
 * [Python 3.5+](https://www.continuum.io/downloads)
 * [PyTorch 0.2.0](http://pytorch.org/)
 
-## Training step
-1. 
+## Training step  
+1. Optimize D  
+* Optimize D in cVAE-GAN using real_B and fake_B made with encoded_z(Adversarial loss).  
+* Optimize D in cLR-GAN using real_B and fake_B made with random_z(Adversarial loss).  
+
+2. Optimize G or E
+* Optimize G and E in cVAE-GAN using fake_B made with encoded_z(Adversarial loss).
+* Optimize G and E in cVAE-GAN using real_B and fake_B made with encoded_z(Image reconstruction loss).  
+* Optimize E in cVAE-GAN using the encoder outputs, mu and log_variance(KL-div loss).  
+* Optimize G in cLR-GAN using fake_B made with random_z(Adversarial loss).  
+
+3. Optimize ONLY G(Do not update E)
+* Optimize G in cLR-GAN using random_z and the encoder output mu.
 
 ## Implementation details
 
