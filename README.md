@@ -19,17 +19,17 @@ This can be seen as __latent code reconstruction process.__ The main purpose of 
 
 ## Training step  
 __1. Optimize D__  
-* Optimize D in cVAE-GAN using real_B and fake_B made with encoded_z(Adversarial loss).  
-* Optimize D in cLR-GAN using real_B and fake_B made with random_z(Adversarial loss).  
+* Optimize D in cVAE-GAN using real_B and fake_B made with encoded_z(__Adversarial loss__).  
+* Optimize D in cLR-GAN using real_B and fake_B made with random_z(__Adversarial loss__).  
 
 __2. Optimize G or E__  
-* Optimize G and E in cVAE-GAN using fake_B made with encoded_z(Adversarial loss).
-* Optimize G and E in cVAE-GAN using real_B and fake_B made with encoded_z(Image reconstruction loss).  
-* Optimize E in cVAE-GAN using the encoder outputs, mu and log_variance(KL-div loss).  
-* Optimize G in cLR-GAN using fake_B made with random_z(Adversarial loss).  
+* Optimize G and E in cVAE-GAN using fake_B made with encoded_z(__Adversarial loss__).
+* Optimize G and E in cVAE-GAN using real_B and fake_B made with encoded_z(__Image reconstruction loss__).  
+* Optimize E in cVAE-GAN using the encoder outputs, mu and log_variance(__KL-div loss__).  
+* Optimize G in cLR-GAN using fake_B made with random_z(__Adversarial loss__).  
 
 __3. Optimize ONLY G(Do not update E)__  
-* Optimize G in cLR-GAN using random_z and the encoder output mu.
+* Optimize G in cLR-GAN using random_z and the encoder output mu(__Latent code reconstruction loss__).
 
 ## Implementation details
 
