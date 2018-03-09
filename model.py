@@ -1,3 +1,8 @@
+''' 
+model_v3.py
+Initially, the discriminator contains two discriminator for different patch size.
+'''
+
 import torch
 import torch.nn as nn
 
@@ -86,8 +91,8 @@ class DeconvBlock(nn.Module):
             down_7 doesn't have a partener.
     
     ex) up_1 and down_6 have same size of (N, 512, 2, 2) given that input size is (N, 3, 128, 128).
-        When forward into upsample_2, up_1 and down_6 are concatenated to make (N, 1024, 2, 2) and then
-        upsample_2 make (N, 512, 4, 4).
+        When forwarding into upsample_2, up_1 and down_6 are concatenated to make (N, 1024, 2, 2) and then
+        upsample_2 makes (N, 512, 4, 4). That is why upsample_2 has 1024 input dimension and 512 output dimension 
         
         Except upsample_1, all the other upsampling blocks do the same thing.
 '''
@@ -140,31 +145,36 @@ class Generator(nn.Module):
 '''
     < Discriminator >
     
-    PatchGAN discriminator. See https://arxiv.org/pdf/1611.07004 6.1.2 Discriminator architectures
-    Implementation below corresponds to 70 x 70 Discriminator when input image size is 128 x 128
+    PatchGAN discriminator. See https://arxiv.org/pdf/1611.07004 6.1.2 Discriminator architectures.
+    It uses two discriminator which have different output sizes(different local probabilities).
+    d_1 : (N, 3, 128, 128) -> (N, 1, 14, 14)
+    d_2 : (N, 3, 128, 128) -> (N, 1, 30, 30)
     
-    The output size is not (N, 1, 1, 1) because it is PatchGAN. It is (N, 1, 8, 8) which has 8 x 8 patches.
-    When training discriminator, it compares all 8 x 8 scores with 0 or 1 to make loss.
-'''
-    
+    In training, the generator needs to fool both of d_1 and d_2 and it makes the generator more robust.
+ 
+'''  
 class Discriminator(nn.Module):
     def __init__(self):
-        super(Discriminator, self).__init__()
-        # (N, 3, 128, 128) -> (N, 64, 64, 64)
-        self.conv_1 = ConvBlock(3, 64, k=4, s=2, p=1, norm=False, non_linear='leaky_relu')
-        # (N, 64, 64, 64) -> (N, 128, 32, 32)
-        self.conv_2 = ConvBlock(64, 128, k=4, s=2, p=1, norm=True, non_linear='leaky-relu')
-        # (N, 128, 32, 32) -> (N, 256, 16, 16)
-        self.conv_3 = ConvBlock(128, 256, k=4, s=1, p=1, norm=True, non_linear='leaky-relu')
-        # Patch GAN : (N, 256, 16, 16) -> (N, 1, 8, 8) (Last activation volume is not (N, 1, 1, 1))
-        self.conv_4 = ConvBlock(256, 1, k=4, s=1, p=1, norm=False, non_linear=None)
+        super(Discriminator, self).__init__()       
+        # Discriminator with last patch (14x14)
+        # (N, 3, 128, 128) -> (N, 1, 14, 14)
+        self.d_1 = nn.Sequential(nn.AvgPool2d(kernel_size=3, stride=2, padding=0, count_include_pad=False),
+                                 ConvBlock(3, 32, k=4, s=2, p=1, norm=False, non_linear='leaky_relu'),
+                                 ConvBlock(32, 64, k=4, s=2, p=1, norm=True, non_linear='leaky-relu'),
+                                 ConvBlock(64, 128, k=4, s=1, p=1, norm=True, non_linear='leaky-relu'),
+                                 ConvBlock(128, 1, k=4, s=1, p=1, norm=False, non_linear=None))
         
+        # Discriminator with last patch (30x30)
+        # (N, 3, 128, 128) -> (N, 1, 30, 30)
+        self.d_2 = nn.Sequential(ConvBlock(3, 64, k=4, s=2, p=1, norm=False, non_linear='leaky_relu'),
+                                 ConvBlock(64, 128, k=4, s=2, p=1, norm=True, non_linear='leaky-relu'),
+                                 ConvBlock(128, 256, k=4, s=1, p=1, norm=True, non_linear='leaky-relu'),
+                                 ConvBlock(256, 1, k=4, s=1, p=1, norm=False, non_linear=None))
+    
     def forward(self, x):
-        out = self.conv_1(x)
-        out = self.conv_2(out)
-        out = self.conv_3(out)
-        out = self.conv_4(out)
-        return out
+        out_1 = self.d_1(x)
+        out_2 = self.d_2(x)
+        return (out_1, out_2)
     
 '''
     < ResBlock >
@@ -202,7 +212,6 @@ class ResBlock(nn.Module):
     3. random_z = N(0, 1)
     4. encoded_z = random_z * std + mu (Reparameterization trick)
 '''
-
 class Encoder(nn.Module):
     def __init__(self, z_dim=8):
         super(Encoder, self).__init__()
