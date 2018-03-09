@@ -1,8 +1,3 @@
-''' 
-model_v3.py
-Initially, the discriminator contains two discriminator for different patch size.
-'''
-
 import torch
 import torch.nn as nn
 
