@@ -28,7 +28,7 @@ Before getting started, suppose that we want to optmize G which can convert __do
   
 __real_B__ : A real image of domain B from training data set  
 __fake_B__ : A fake image of domain B made by the generator  
-__encoded_z__ : Latent code z made by the encoder
+__encoded_z__ : Latent code z made by the encoder  
 __random_z__ : Latent code z sampled randomly from normal distribution
   
 __1. Optimize D__ 
