@@ -1,5 +1,5 @@
 # BicycleGAN-pytorch
-__Pytorch__ implementation of [BicycleGAN : Toward Multimodal Image-to-Image Translation](https://arxiv.org/abs/1711.11586). This model can generate diverse images from an input image using random latent vector z.
+__Pytorch__ implementation of [BicycleGAN : Toward Multimodal Image-to-Image Translation](https://arxiv.org/abs/1711.11586).
 <p align="center"><img width="100%" src="png/represent.png" /></p>  
 
 ## Result
@@ -14,17 +14,22 @@ __Pytorch__ implementation of [BicycleGAN : Toward Multimodal Image-to-Image Tra
 <p align="center"><img width="100%" src="png/model.png" /></p>  
 
 ### cVAE-GAN
-This can be seen as __image reconstruction process.__ By doing this, we can make the encoder extract proper latent code z which specializes given image 'B' and the generator generate an image which has features of 'B'. Of course, the generator also needs to be able to fool the discriminator. Futhermore, It uses KL-divergence to make the generator be able to generate images using randomly sampled z from normal distribution.
+This can be seen as __image reconstruction process.__ By doing this, we can make the encoder extract proper latent code z which contains features of given image 'B' and the generator generate image which has features of 'B'. Of course, the generator also needs to be able to fool the discriminator. Futhermore, It uses KL-divergence to make the generator be able to generate images using randomly sampled z from normal distribution at the test phase.
 
 ### cLR-GAN
-This can be seen as __latent code reconstruction process.__ The main purpose of this process is to make invertible mapping between B and z. It leads to bijective consistency between latent encoding and output modes that is important to prevent from __mode collapse.__ If many latent codes correspond to an output mode, this is mode collapse.
+This can be seen as __latent code reconstruction process.__ If many latent codes correspond to a same output mode, this is mode collapse. The main purpose of cLR-GAN is to make invertible mapping between B and z. It leads to bijective consistency between latent encoding and output modes that is significant to prevent model from __mode collapse.__  
 
 ## Prerequisites
 * [Python 3.5+](https://www.continuum.io/downloads)
 * [PyTorch 0.2.0](http://pytorch.org/)
 
-## Training step  
-__1. Optimize D__  
+## Training step  
+Before getting started, suppose that we want to optmize G which can convert __domain A into B__.  
+__real_B__ : A real image of domain B from training data set  
+__fake_B__ : A fake image of domain B made by the generator  
+  
+  
+__1. Optimize D__ 
 * Optimize D in cVAE-GAN using real_B and fake_B made with encoded_z(__Adversarial loss__).  
 * Optimize D in cLR-GAN using real_B and fake_B made with random_z(__Adversarial loss__).  
 
