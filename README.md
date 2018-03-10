@@ -76,5 +76,5 @@ You can download many datasets for BicycleGAN from [here](https://github.com/jun
 * Training images : ```data/edges2shoes/train```
 * Test images : ```data/edges2shoes/test```  
 
-## How to train
+## How to use
 ```python train.py --root=data/edges2shoes --result_dir=result --weight_dir=weight```
