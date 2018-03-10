@@ -62,12 +62,13 @@ Batch size is 1 for each cVAE-GAN and cLR-GAN which means that get two images fr
 Encoder returns mean and log_variance. Reparameterization trick is used, so __encoded_z = random_z * std + mean__ such that __std = exp(log_variance / 2).__
 
 * __How to calculate KL divergence__  
+Following formula is from [here](http://yunjey47.tistory.com/43). Also if you want to see simple and clean VAE code, you can check [here](https://github.com/yunjey/pytorch-tutorial/blob/master/tutorials/03-advanced/variational_auto_encoder/main.py).
 <p align="left"><img width="70%" img height="70%" src="png/kl_1.png" /></p>  
 We need to get KL divergence with N(0, 1), so it leads to following expression.  
 <p align="left"><img width="70%" img height="70%" src="png/kl_2.png" /></p>  
 
 * __How to reconstruct z in cLR-GAN__  
-We get mu and log_variance as outputs from the encoder in cLR-GAN. Use __L1 loss between mu and random_z__, not encoded_z and random_z because the latter loss can be unstable if std is big. You can check [here](https://github.com/junyanz/BicycleGAN/issues/14).
+We get mu and log_variance as outputs from the encoder in cLR-GAN. Use __L1 loss between mu and random_z__, not encoded_z and random_z. You can check the reason from [here](https://github.com/junyanz/BicycleGAN/issues/14).
 
 ## Dataset
 You can download many datasets for BicycleGAN from [here](https://github.com/junyanz/BicycleGAN/tree/master/datasets). 
