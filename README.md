@@ -58,7 +58,7 @@ __E_ResNet__ is used, __not E_CNN__. Residual block in the encoder is slightly d
 Inject __only to the input__ by concatenating, not to all intermediate layers
 
 * __Training data__  
-Batch size is 1 for each cVAE-GAN and cLR-GAN which means that get two images from the dataloader and distribute to cVAE-GAN and cLR-GAN.
+Batch size is 1 for both cVAE-GAN and cLR-GAN which means that get two images from the dataloader and distribute to cVAE-GAN and cLR-GAN.
 
 * __How to encode with encoder__  
 Encoder returns mean and log_variance. Reparameterization trick is used, so __encoded_z = random_z * std + mean__ such that __std = exp(log_variance / 2).__
