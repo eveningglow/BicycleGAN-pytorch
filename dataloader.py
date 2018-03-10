@@ -30,7 +30,7 @@ class Edges2Shoes(Dataset):
         
         return (data, ground_truth)
 
-def data_loader(root, batch_size=1, shuffle=True, img_size=128, mode='train'):
+def data_loader(root, batch_size=1, shuffle=True, img_size=128, mode='train'):    
     transform = Transforms.Compose([Transforms.Scale((img_size, img_size)),
                                     Transforms.ToTensor(),
                                     Transforms.Normalize(mean=(0.5, 0.5, 0.5),
@@ -38,6 +38,10 @@ def data_loader(root, batch_size=1, shuffle=True, img_size=128, mode='train'):
                                    ])
     
     dset = Edges2Shoes(root, transform, mode=mode)
+    
+    if batch_size == 'all':
+        batch_size = len(dset)
+        
     dloader = torch.utils.data.DataLoader(dset,
                                           batch_size=batch_size,
                                           shuffle=shuffle,
