@@ -1,3 +1,8 @@
+'''
+If you have any difficulties in following this code, 
+training step and implementation detail section in README.md might be helpful.
+'''
+
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
@@ -64,9 +69,6 @@ class Solver():
         self.t_dloader, _ = data_loader(root=root, batch_size=test_size, shuffle=False, 
                                         img_size=img_size, mode='val')
 
-        # Models
-        # D_cVAE is discriminator for cVAE-GAN(encoded vector z).
-        # D_cLR is discriminator for cLR-GAN(random vector z).
         # Both of D_cVAE and D_cLR has two discriminators which have different output size((14x14) and (30x30)).
         # Totally, we have for discriminators now.
         self.D_cVAE = model.Discriminator().type(self.dtype)
@@ -80,7 +82,7 @@ class Solver():
         self.optim_G = optim.Adam(self.G.parameters(), lr=lr, betas=(beta_1, beta_2))
         self.optim_E = optim.Adam(self.E.parameters(), lr=lr, betas=(beta_1, beta_2))
 
-        # fixed random_z for test
+        # fixed random_z for intermediate test
         self.fixed_z = util.var(torch.randn(test_size, test_img_num, z_dim))
         
         # Some hyperparameters
@@ -98,24 +100,6 @@ class Solver():
         self.start_epoch = 0
         self.num_epoch = num_epoch
         self.save_every = save_every
-        
-    '''
-        < show_model >
-        Print model architectures
-    '''
-    def show_model(self):
-        print('=========================== Discriminator for cVAE ===========================')
-        print(self.D_cVAE)
-        print('=============================================================================\n\n')
-        print('=========================== Discriminator for cLR ===========================')
-        print(self.D_cLR)
-        print('=============================================================================\n\n')
-        print('================================= Generator =================================')
-        print(self.G)
-        print('=============================================================================\n\n')
-        print('================================== Encoder ==================================')
-        print(self.E)
-        print('=============================================================================\n\n')
         
     '''
         < set_train_phase >
@@ -181,21 +165,18 @@ class Solver():
             self.load_pretrained()
         
         self.set_train_phase()
-        self.show_model()
         
-        # Training Start!
         for epoch in range(self.start_epoch, self.num_epoch):
             for iters, (img, ground_truth) in enumerate(self.dloader):
-                # img(2, 3, 128, 128) : Domain A. One for cVAE and another for cLR. 
-                # ground_truth(2, 3, 128, 128) : Domain B. One for cVAE and another for cLR.
+                # img : (2, 3, 128, 128) of domain A / ground_truth : (2, 3, 128, 128) of domain B
                 img, ground_truth = util.var(img), util.var(ground_truth)
 
-                # Seperate data for cVAE_GAN(using encoded z) and cLR_GAN(using random z)
+                # Seperate data for cVAE_GAN and cLR_GAN
                 cVAE_data = {'img' : img[0].unsqueeze(dim=0), 'ground_truth' : ground_truth[0].unsqueeze(dim=0)}
                 cLR_data = {'img' : img[1].unsqueeze(dim=0), 'ground_truth' : ground_truth[1].unsqueeze(dim=0)}
 
                 ''' ----------------------------- 1. Train D ----------------------------- '''
-                #############   Step 1. D loss in cVAE-GAN(See Figure 2.(c))   #############
+                #############   Step 1. D loss in cVAE-GAN #############
 
                 # Encoded latent vector
                 mu, log_variance = self.E(cVAE_data['ground_truth'])
@@ -214,7 +195,7 @@ class Solver():
                 D_loss_cVAE_1 = mse_loss(real_d_cVAE_1, 1) + mse_loss(fake_d_cVAE_1, 0)
                 D_loss_cVAE_2 = mse_loss(real_d_cVAE_2, 1) + mse_loss(fake_d_cVAE_2, 0)
                 
-                #############   Step 2. D loss in cLR-GAN(See Figure 2.(D))   #############
+                #############   Step 2. D loss in cLR-GAN   #############
 
                 # Random latent vector
                 random_z = util.var(torch.randn(1, self.z_dim))
@@ -223,7 +204,6 @@ class Solver():
                 fake_img_cLR = self.G(cLR_data['img'], random_z)
 
                 # Get scores and loss
-                # Big PatchGAN Discriminator
                 real_d_cLR_1, real_d_cLR_2 = self.D_cLR(cLR_data['ground_truth'])
                 fake_d_cLR_1, fake_d_cLR_2 = self.D_cLR(fake_img_cLR)
                 
@@ -239,7 +219,7 @@ class Solver():
                 self.optim_D_cLR.step()
 
                 ''' ----------------------------- 2. Train G & E ----------------------------- '''
-                # Step 1. GAN loss to fool discriminator (cVAE_GAN and cLR_GAN)
+                ############# Step 1. GAN loss to fool discriminator (cVAE_GAN and cLR_GAN) #############
 
                 # Encoded latent vector
                 mu, log_variance = self.E(cVAE_data['ground_truth'])
@@ -266,11 +246,11 @@ class Solver():
 
                 G_GAN_loss = GAN_loss_cVAE_1 + GAN_loss_cVAE_2 + GAN_loss_cLR_1 + GAN_loss_cLR_2
 
-                # Step 2. KL-divergence with N(0, 1) (cVAE-GAN)
-                # See http://yunjey47.tistory.com/43 or Appendix B in the paper for details
+                ############# Step 2. KL-divergence with N(0, 1) (cVAE-GAN) #############
+                
                 KL_div = self.lambda_kl * torch.sum(0.5 * (mu ** 2 + torch.exp(log_variance) - log_variance - 1))
 
-                # Step 3. Reconstruction of ground truth image (|G(A, z) - B|) (cVAE-GAN)
+                ############# Step 3. Reconstruction of ground truth image (|G(A, z) - B|) (cVAE-GAN) #############
                 img_recon_loss = self.lambda_img * L1_loss(fake_img_cVAE, cVAE_data['ground_truth'])
 
                 EG_loss = G_GAN_loss + KL_div + img_recon_loss
@@ -280,9 +260,9 @@ class Solver():
                 self.optim_G.step()
 
                 ''' ----------------------------- 3. Train ONLY G ----------------------------- '''
-                # Step 1. Reconstrution of random latent code (|E(G(A, z)) - z|) (cLR-GAN)
-                # This step should update only G.
-                # See https://github.com/junyanz/BicycleGAN/issues/5 for details.
+                ############ Step 1. Reconstrution of random latent code (|E(G(A, z)) - z|) (cLR-GAN) ############
+                
+                # This step should update ONLY G.
                 mu_, log_variance_ = self.E(fake_img_cLR)
                 z_recon_loss = L1_loss(mu_, random_z)
 
@@ -295,7 +275,7 @@ class Solver():
                 log_file = open('log.txt', 'w')
                 log_file.write(str(epoch))
                 
-                # Print error, save intermediate result image and weight
+                # Print error and save intermediate result image and weight
                 if iters % self.save_every == 0:
                     print('[Epoch : %d / Iters : %d] => D_loss : %f / G_GAN_loss : %f / KL_div : %f / img_recon_loss : %f / z_recon_loss : %f'\
                           %(epoch, iters, D_loss.data[0], G_GAN_loss.data[0], KL_div.data[0], img_recon_loss.data[0], G_alone_loss.data[0]))
