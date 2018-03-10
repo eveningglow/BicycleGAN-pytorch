@@ -17,7 +17,7 @@ __Pytorch__ implementation of [BicycleGAN : Toward Multimodal Image-to-Image Tra
 cVAE-GAN is an __image reconstruction process.__ From this, the encoder can extract proper latent code z containing features of given image 'B'. Through this process, the generator can generate image which has features of 'B' but the generator also needs to be able to fool the discriminator. Futhermore, cVAE-GAN uses KL-divergence to make the generator be able to generate images using randomly sampled z from normal distribution at the test phase.
 
 ### cLR-GAN
-This is an __latent code reconstruction process.__ If many latent codes correspond to a same output mode, this is called mode collapse. The main purpose of cLR-GAN is to make invertible mapping between B and z. It leads to bijective consistency between latent encoding and output modes that is significant to prevent model from __mode collapse.__  
+This is an __latent code reconstruction process.__ If many latent codes correspond to a same output mode, this is called mode collapse. The main purpose of cLR-GAN is to make invertible mapping between B and z. It leads to bijective consistency between latent encoding and output modes that is significant in preventing model from __mode collapse.__  
 
 ## Prerequisites
 * [Python 3.5+](https://www.continuum.io/downloads)
