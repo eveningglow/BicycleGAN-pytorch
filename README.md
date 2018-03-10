@@ -47,7 +47,7 @@ __3. Optimize ONLY G(Do not update E)__
 ## Implementation details
 
 * __Multi discriminator__  
-First, __two discriminators__ are used for __two different last output size(PatchGAN)__, 14x14 and 30x30 to make the discriminator learn from two different scale.  
+First, __two discriminators__ are used for __two different last output sizes(PatchGAN)__; 14x14 and 30x30, for the discriminator to learn from two different scales.  
 Second, __two discriminators__ again for images made with __encoded_z(cVAE-GAN) and random_z(cLR-GAN)__ because fake images are generated from two different distribution, N(mu, std) and N(0, 1) corresponding to cVAE-GAN and cLR-GAN for each. Two discriminators for each distribution are better than just one discriminator for both distributions.   
 Totally, __four discriminators__ are used, __(cVAE-GAN, 14x14), (cVAE-GAN, 30x30), (cLR-GAN, 14x14) and (cLR-GAN, 30x30).__  
 
