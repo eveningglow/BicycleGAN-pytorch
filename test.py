@@ -124,6 +124,8 @@ def main(args):
         os.makedirs(args.result_dir)
         
     # For example, img_name = random_55.png
+    if args.epoch is None:
+        args.epoch = 'latest'
     img_name = '{type}_{epoch}.png'.format(type=args.sample_type, epoch=args.epoch)
     img_path = os.path.join(args.result_dir, img_name)
 
