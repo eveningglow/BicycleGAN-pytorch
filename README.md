@@ -88,7 +88,7 @@ You can download many datasets for BicycleGAN from [here](https://github.com/jun
 * Random sample  
 ```python test.py --sample_type=random --root=data/edges2shoes --result_dir=test --weight_dir=weight --img_num=5```
   
-* Interpolation
+* Interpolation  
 ```python test.py --sample_type=interpolation --root=data/edges2shoes --result_dir=test --weight_dir=weight --img_num=10```  
   
 ## Future work
