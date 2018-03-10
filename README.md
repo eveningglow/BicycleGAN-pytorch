@@ -85,8 +85,12 @@ You can download many datasets for BicycleGAN from [here](https://github.com/jun
 ### Train
 ```python train.py --root=data/edges2shoes --result_dir=result --weight_dir=weight```
 ### Test
-```python test.py```
-
+* Random sample  
+```python test.py --sample_type=random --root=data/edges2shoes --result_dir=test --weight_dir=weight --img_num=5```
+  
+* Interpolation
+```python test.py --sample_type=interpolation --root=data/edges2shoes --result_dir=test --weight_dir=weight --img_num=10```  
+  
 ## Future work
 * Training with other datasets.
 * New model using conditional discriminator is on the training now
