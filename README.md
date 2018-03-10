@@ -70,7 +70,10 @@ We need to get KL divergence with N(0, 1), so it leads to following expression.
 <p align="left"><img width="70%" img height="70%" src="png/kl_2.png" /></p>  
 
 * __How to reconstruct z in cLR-GAN__  
-We get mu and log_variance as outputs from the encoder in cLR-GAN. Use __L1 loss between mu and random_z__, not encoded_z and random_z. You can check the reason from [here](https://github.com/junyanz/BicycleGAN/issues/14).
+We get mu and log_variance as outputs from the encoder in cLR-GAN. Use __L1 loss between mu and random_z__, not encoded_z and random_z. The reasons are following.  
+1. cLR-GAN is doing point estimation not distribution estimation.  
+2. If std is big, L1 loss between random_z and predicted_z might be unstable.  
+You can check [here](https://github.com/junyanz/BicycleGAN/issues/14).
 
 ## Dataset
 You can download many datasets for BicycleGAN from [here](https://github.com/junyanz/BicycleGAN/tree/master/datasets). 
@@ -79,4 +82,11 @@ You can download many datasets for BicycleGAN from [here](https://github.com/jun
 * Test images : ```data/edges2shoes/test```  
 
 ## How to use
+### Train
 ```python train.py --root=data/edges2shoes --result_dir=result --weight_dir=weight```
+### Test
+```python test.py```
+
+## Future work
+* Training with other datasets.
+* Improvement to work with unpaired dataset.
