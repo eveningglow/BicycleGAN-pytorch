@@ -70,7 +70,8 @@ We need to get KL divergence with N(0, 1), so it leads to following expression.
 <p align="left"><img width="70%" img height="70%" src="png/kl_2.png" /></p>  
 
 * __How to reconstruct z in cLR-GAN__  
-We get mu and log_variance as outputs from the encoder in cLR-GAN. Use __L1 loss between mu and random_z__, not encoded_z and random_z. The reasons are following or you can check [here](https://github.com/junyanz/BicycleGAN/issues/14).
+We get mu and log_variance as outputs from the encoder in cLR-GAN. Use __L1 loss between mu and random_z__, not encoded_z and random_z. The reasons are following or you can check [here](https://github.com/junyanz/BicycleGAN/issues/14).  
+  
   1. cLR-GAN is doing point estimation not distribution estimation.  
   2. If std is big, L1 loss between random_z and predicted_z might be unstable.  
 
