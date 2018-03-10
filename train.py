@@ -2,7 +2,7 @@ import torch
 import argparse
 import os
 
-from solver_v3 import Solver
+from solver import Solver
 
 def main(args):
     solver = Solver(root = args.root,
