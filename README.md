@@ -47,7 +47,9 @@ __3. Optimize ONLY G(Do not update E)__
 ## Implementation details
 
 * __Multi discriminator__  
-First, two discriminators are used for two different last output size(PatchGAN), 14x14 and 30x30. Second, two discriminators again for images made with encoded z(cVAE-GAN) and random z(cLR-GAN). Totally, __four discriminators__ are used, __(cVAE-GAN, 14x14), (cVAE-GAN, 30x30), (cLR-GAN, 14x14) and (cLR-GAN, 30x30).__
+First, __two discriminators__ are used for __two different last output size(PatchGAN)__, 14x14 and 30x30 to make the discriminator learn from two different scale.  
+Second, __two discriminators__ again for images made with __encoded_z(cVAE-GAN) and random_z(cLR-GAN)__ because fake images are generated from two different distribution, N(mu, std) and N(0, 1) corresponding to cVAE-GAN and cLR-GAN for each. Two discriminators for each distribution are better than just one discriminator for both distributions.   
+Totally, __four discriminators__ are used, __(cVAE-GAN, 14x14), (cVAE-GAN, 30x30), (cLR-GAN, 14x14) and (cLR-GAN, 30x30).__  
 
 * __Encoder__  
 __E_ResNet__ is used, __not E_CNN__. Residual block in the encoder is slightly different with the usual one. Check ResBlock class and Encoder class in model.py.
