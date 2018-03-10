@@ -29,16 +29,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--root', type=str, default='data/edges2shoes', 
                         help='Data location')
-    parser.add_argument('--result_dir', type=str, default='test_v3', 
-                        help='Result images location')
-    parser.add_argument('--weight_dir', type=str, default='weight_v3', 
+    parser.add_argument('--result_dir', type=str, default='result_img', 
+                        help='Result images location for intermediate check')
+    parser.add_argument('--weight_dir', type=str, default='weight', 
                         help='Weight location')
     parser.add_argument('--batch_size', type=int, default=2, 
                         help='Training batch size')
     parser.add_argument('--test_size', type=int, default=20, 
-                        help='Test batch size')
+                        help='Test batch size for intermediate check')
     parser.add_argument('--test_img_num', type=int, default=5, 
-                        help='How many images do you want to generate?')
+                        help='How many images do you want to generate for intermediate check?')
     parser.add_argument('--img_size', type=int, default=128, 
                         help='Image size')
     parser.add_argument('--lr', type=float, default=0.0002,
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_epoch', type=int, default=100, 
                         help='Number of epoch')
     parser.add_argument('--save_every', type=int, default=1000, 
-                        help='How often do you want to see the result?')
+                        help='How often do you want to see the intermediate result?')
     parser.add_argument('--load_weight', action='store_true',
                         help='Load weight or not')
 

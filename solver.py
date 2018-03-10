@@ -5,7 +5,7 @@ import torch.optim as optim
 import torchvision
 
 from dataloader import data_loader
-import model_v3 as model
+import model
 import util
 
 import os
@@ -137,7 +137,7 @@ class Solver():
         self.G.load_state_dict(torch.load(os.path.join(self.weight_dir, 'G.pkl')))
         self.E.load_state_dict(torch.load(os.path.join(self.weight_dir, 'E.pkl')))
         
-        log_file = open('log_v3.txt', 'r')
+        log_file = open('log.txt', 'r')
         line = log_file.readline()
         self.start_epoch = int(line)
         
@@ -292,7 +292,7 @@ class Solver():
                 G_alone_loss.backward()
                 self.optim_G.step()
 
-                log_file = open('log_v3.txt', 'w')
+                log_file = open('log.txt', 'w')
                 log_file.write(str(epoch))
                 
                 # Print error, save intermediate result image and weight
