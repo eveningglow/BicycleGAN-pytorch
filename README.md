@@ -83,13 +83,22 @@ You can download many datasets for BicycleGAN from [here](https://github.com/jun
 
 ## How to use
 ### Train
-```python train.py --root=data/edges2shoes --result_dir=result --weight_dir=weight```
-### Test
-* Random sample  
-```python test.py --sample_type=random --root=data/edges2shoes --result_dir=test --weight_dir=weight --img_num=5```
+```python train.py --root=data/edges2shoes --result_dir=result --weight_dir=weight```  
   
-* Interpolation  
-```python test.py --sample_type=interpolation --root=data/edges2shoes --result_dir=test --weight_dir=weight --img_num=10```  
+### Test
+#### Random sample  
+* Most recent  
+```python test.py --sample_type=random --root=data/edges2shoes --result_dir=test --weight_dir=weight --img_num=5```  
+  
+* Set epoch  
+```python test.py --sample_type=random --root=data/edges2shoes --result_dir=test --weight_dir=weight --img_num=5 --epoch=55```  
+  
+#### Interpolation  
+* Most recent  
+```python test.py --sample_type=interpolation --root=data/edges2shoes --result_dir=test --weight_dir=weight --img_num=10```    
+  
+* Set epoch  
+```python test.py --sample_type=interpolation --root=data/edges2shoes --result_dir=test --weight_dir=weight --img_num=10 --epoch=55```  
   
 ## Future work
 * Training with other datasets.
