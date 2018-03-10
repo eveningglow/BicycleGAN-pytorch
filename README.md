@@ -61,7 +61,7 @@ Inject __only to the input__ by concatenating, not to all intermediate layers
 Batch size is 1 for both cVAE-GAN and cLR-GAN which means that get two images from the dataloader and distribute to cVAE-GAN and cLR-GAN.
 
 * __How to encode with encoder__  
-Encoder returns mean and log_variance. Reparameterization trick is used, so __encoded_z = random_z * std + mean__ such that __std = exp(log_variance / 2).__
+Encoder returns mu and log_variance. Reparameterization trick is used, so __encoded_z = random_z * std + mu__ such that __std = exp(log_variance / 2).__
 
 * __How to calculate KL divergence__  
 Following formula is from [here](http://yunjey47.tistory.com/43). Also if you want to see simple and clean VAE code, you can check [here](https://github.com/yunjey/pytorch-tutorial/blob/master/tutorials/03-advanced/variational_auto_encoder/main.py).
@@ -70,10 +70,10 @@ From N(0, 1) get KL divergence, so it leads to following formula.
 <p align="left"><img width="70%" img height="70%" src="png/kl_2.png" /></p>  
 
 * __How to reconstruct z in cLR-GAN__  
-We get mu and log_variance as outputs from the encoder in cLR-GAN. Use __L1 loss between mu and random_z__, not encoded_z and random_z. The reasons are following or you can check [here](https://github.com/junyanz/BicycleGAN/issues/14).  
+mu and log_variance are derived from the encoder in cLR-GAN. Use __L1 loss between mu and random_z__, not encoded_z and random_z. The reasons are the followings or you can check [here](https://github.com/junyanz/BicycleGAN/issues/14).  
   
-  1. cLR-GAN is doing point estimation not distribution estimation.  
-  2. If std is big, L1 loss between random_z and predicted_z might be unstable.  
+  1. cLR-GAN is for point estimation not distribution estimation.  
+  2. If std is too big, L1 loss between encoded_z and random_z can be unstable.  
 
 ## Dataset
 You can download many datasets for BicycleGAN from [here](https://github.com/junyanz/BicycleGAN/tree/master/datasets). 
