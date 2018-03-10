@@ -66,7 +66,7 @@ Encoder returns mean and log_variance. Reparameterization trick is used, so __en
 * __How to calculate KL divergence__  
 Following formula is from [here](http://yunjey47.tistory.com/43). Also if you want to see simple and clean VAE code, you can check [here](https://github.com/yunjey/pytorch-tutorial/blob/master/tutorials/03-advanced/variational_auto_encoder/main.py).
 <p align="left"><img width="70%" img height="70%" src="png/kl_1.png" /></p>  
-We need to get KL divergence with N(0, 1), so it leads to following expression.  
+From N(0, 1) get KL divergence, so it leads to following formula.  
 <p align="left"><img width="70%" img height="70%" src="png/kl_2.png" /></p>  
 
 * __How to reconstruct z in cLR-GAN__  
