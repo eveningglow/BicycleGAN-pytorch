@@ -25,9 +25,11 @@ This can be seen as __latent code reconstruction process.__ If many latent codes
 
 ## Training step  
 Before getting started, suppose that we want to optmize G which can convert __domain A into B__.  
+  
 __real_B__ : A real image of domain B from training data set  
 __fake_B__ : A fake image of domain B made by the generator  
-  
+__encoded_z__ : Latent code z made by the encoder
+__random_z__ : Latent code z sampled randomly from normal distribution
   
 __1. Optimize D__ 
 * Optimize D in cVAE-GAN using real_B and fake_B made with encoded_z(__Adversarial loss__).  
@@ -69,6 +71,9 @@ We get mu and log_variance as outputs from the encoder in cLR-GAN. Use __L1 loss
 
 ## Dataset
 You can download many datasets for BicycleGAN from [here](https://github.com/junyanz/BicycleGAN/tree/master/datasets). 
+  
+* Training images : ```data/edges2shoes/train```
+* Test images : ```data/edges2shoes/test```  
 
 ## How to train
 ```python train.py --root=data/edges2shoes --result_dir=result --weight_dir=weight```
