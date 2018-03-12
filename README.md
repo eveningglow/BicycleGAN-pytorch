@@ -3,7 +3,9 @@ __Pytorch__ implementation of [BicycleGAN : Toward Multimodal Image-to-Image Tra
 <p align="center"><img width="100%" src="png/represent.png" /></p>  
 
 ## Result
-### Edges2Shoes
+### Edges2Shoes  
+Image size is 128 x 128  
+
 * Random sampling
 <p align="center"><img width="100%" src="png/random_sample.png" /></p>  
 
