@@ -104,4 +104,4 @@ You can download many datasets for BicycleGAN from [here](https://github.com/jun
   
 ## Future work
 * Training with other datasets.
-* New model using conditional discriminator is on the training now
+* ~~New model using conditional discriminator is on the training now~~ Check ```Advanced-BicycleGAN```
