@@ -4,7 +4,7 @@ __Pytorch__ implementation of [BicycleGAN : Toward Multimodal Image-to-Image Tra
 
 ## Result
 ### Edges2Shoes  
-Image size is 128 x 128  
+Image size is 128 x 128 and __normal discriminator__ is used, __not conditional discriminator__. You can check what the conditional discriminator is in ```Advanced-BicycleGAN```. It generates slightly more diverse, clear and realistic images than the ones below.    
 
 * Random sampling
 <p align="center"><img width="100%" src="png/random_sample.png" /></p>  
