@@ -117,7 +117,7 @@ def main(args):
         
     weight_path = os.path.join(args.weight_dir, weight_name)
     G = model.Generator(z_dim=8).type(dtype)
-    G.load_state_dict(torch.load(weight_path))
+    G.load_state_dict(torch.load(weight_path, map_location='cpu'))
     G.eval()
     
     if os.path.exists(args.result_dir) is False:
